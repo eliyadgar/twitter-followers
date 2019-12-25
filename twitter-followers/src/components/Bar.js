@@ -62,7 +62,6 @@ export default function PrimarySearchAppBar(props) {
 
   return (
     <div className={classes.grow}>
-        {searchTerm}
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
