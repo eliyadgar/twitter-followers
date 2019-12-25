@@ -59,8 +59,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function PrimarySearchAppBar(props) {
   const classes = useStyles();
-  const [searchTerm, setSearchTerm] = useState('');
-
 
   return (
     <div className={classes.grow}>
