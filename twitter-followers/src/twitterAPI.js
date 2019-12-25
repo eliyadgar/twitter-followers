@@ -7,7 +7,8 @@ export const getFollowers = async (accountName) => {
                 
                 const followers = result.users.map(user => {
                     return {id: user.id,
-                        label: user.name,
+                        account_name: user.name,
+                        screen_name: user.screen_name,
                         followers: user.followers_count,
                         image: user.profile_image_url
                     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import Bar from './components/Bar'
+import FollowersList from './components/FollowersList'
 import './App.css';
 import debounce from 'lodash/debounce'
 import {getFollowers} from './twitterAPI'
@@ -41,9 +42,11 @@ class App extends React.Component {
 
   render() {
     console.log(this.state.followers)
+    const {searchTerm, followers} = this.state
     return (
       <div className="App">
         <Bar handleSearch={this.handleSearch}/>
+        <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers}/>
       </div>
     );
   }
