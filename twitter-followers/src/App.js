@@ -47,19 +47,29 @@ class App extends React.Component {
             }
           }
         )
-      }
-        
+      } 
+    } else {
+      this.setState({searchTerm: value}) 
     }
   }, 1000)
   
 
   render() {
-    console.log(this.state.followers)
     const {searchTerm, followers} = this.state
+    const emptyFollowersList = searchTerm.length <= 3;
+    const noResults = followers[searchTerm] && followers[searchTerm].fetchedFollowers === undefined;
+    console.log({followers})
     return (
       <div className="App">
         <Bar handleSearch={this.handleSearch} handleSort={this.handleSort}/>
-        <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />
+        {emptyFollowersList &&
+          <div>Please search for account</div> 
+        }
+        {noResults &&
+          <div>No results were found</div> 
+        }
+        {searchTerm.length > 3 
+        && <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />}
       </div>
     );
   }
