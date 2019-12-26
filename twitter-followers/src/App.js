@@ -4,7 +4,7 @@ import Bar from './components/Bar'
 import FollowersList from './components/FollowersList'
 import './App.css';
 import debounce from 'lodash/debounce'
-import {getFollowers} from './twitterAPI'
+import {getFollowers, getAccount} from './twitterAPI'
 import getTime from 'date-fns/getTime'
 
 
@@ -12,6 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showAllFlag: false,
       searchTerm: '',
       followers: {}
     };
@@ -29,22 +30,44 @@ class App extends React.Component {
     }})
   }
 
+  handleShowAll = async () => {
+    const {followers, searchTerm} = this.state
+    const fetchedFollowers = await getFollowers(searchTerm, followers[searchTerm].followers_count)
+    this.setState(
+      {
+        followers : 
+        { ...this.state.followers, 
+        [searchTerm]: 
+          { ...followers[searchTerm],
+            lastUpdatedDate: getTime(new Date()),
+            fetchedFollowers,
+          }
+        } 
+      }
+    )
+  }
+
   handleSearch = debounce(async (value) => {
     if (value.length > 3) {
       if (this.state.followers[value] 
         && compareTimes(this.state.followers[value].lastUpdatedDate) < (1000 * 15)  ) {
           this.setState({searchTerm: value}) 
       } else {
+        const accountDetails = await getAccount(value)
+        console.log(accountDetails);
+        
         const fetchedFollowers = await getFollowers(value)
         this.setState(
           {searchTerm: value,
+            showAllFlag: accountDetails.followers_count > 30,
             followers : 
             { ...this.state.followers, 
             [value]: 
               { lastUpdatedDate: getTime(new Date()),
-                fetchedFollowers
+                fetchedFollowers,
+                ...accountDetails,
               }
-            }
+            } 
           }
         )
       } 
@@ -55,13 +78,13 @@ class App extends React.Component {
   
 
   render() {
-    const {searchTerm, followers} = this.state
+    const {searchTerm, followers, showAllFlag} = this.state
     const emptyFollowersList = searchTerm.length <= 3;
     const noResults = followers[searchTerm] && followers[searchTerm].fetchedFollowers === undefined;
-    console.log({followers})
+    console.log({followers, showAllFlag})
     return (
       <div className="App">
-        <Bar handleSearch={this.handleSearch} handleSort={this.handleSort}/>
+        <Bar handleSearch={this.handleSearch} handleSort={this.handleSort} showAll={showAllFlag} handleShowAll={this.handleShowAll}/>
         {emptyFollowersList &&
           <div>Please search for account</div> 
         }
