@@ -3,8 +3,6 @@ export const getFollowers = async (accountName) => {
     return fetch(`/api/followers/${accountName}`)
     .then(response => response.json())
             .then(result => {
-                console.log('...fetching');
-                
                 const followers = result.users.map(user => {
                     return {id: user.id,
                         account_name: user.name,
@@ -13,7 +11,6 @@ export const getFollowers = async (accountName) => {
                         image: user.profile_image_url
                     }
                 })
-                console.log(followers)
                 return followers
             })
             .catch(error => console.log('error', error));

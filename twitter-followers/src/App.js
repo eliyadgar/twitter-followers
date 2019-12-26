@@ -16,6 +16,19 @@ class App extends React.Component {
       followers: {}
     };
   }
+
+  handleSort = (key) => {
+    const {followers, searchTerm} = this.state
+    console.log("handling sort...")
+    this.setState({followers: {
+      ...followers,
+      [searchTerm]: {
+        ...followers[searchTerm],
+        fetchedFollowers: followers[searchTerm].fetchedFollowers.sort((a, b) => a[key].localeCompare(b[key]))
+      }
+    }})
+  }
+
   handleSearch = debounce(async (value) => {
     if (value.length > 3) {
       if (this.state.followers[value] 
@@ -45,8 +58,8 @@ class App extends React.Component {
     const {searchTerm, followers} = this.state
     return (
       <div className="App">
-        <Bar handleSearch={this.handleSearch}/>
-        <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers}/>
+        <Bar handleSearch={this.handleSearch} handleSort={this.handleSort}/>
+        <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />
       </div>
     );
   }

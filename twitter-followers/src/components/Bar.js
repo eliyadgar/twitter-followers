@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 const useStyles = makeStyles(theme => ({
-  grow: {
+toolbar: {
+    backgroundColor: '#ffffff',
+},
+grow: {
     flexGrow: 1,
   },
   menuButton: {
@@ -47,6 +51,12 @@ const useStyles = makeStyles(theme => ({
   inputRoot: {
     color: 'inherit',
   },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+        display: 'flex',
+    },
+    },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 7),
     transition: theme.transitions.create('width'),
@@ -54,12 +64,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: 200,
     },
-  },
+},
 }));
 
 export default function PrimarySearchAppBar(props) {
   const classes = useStyles();
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -82,6 +91,12 @@ export default function PrimarySearchAppBar(props) {
             />
           </div>
           <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <ButtonGroup edge="end" variant="contained" color="primary"  aria-label="text primary button group">
+                <Button onClick={() => props.handleSort("account_name")}>Sort by Account name</Button>
+                <Button onClick={() => props.handleSort("screen_name")}>Sort by Screen name</Button>
+            </ButtonGroup>      
+          </div>
         </Toolbar>
       </AppBar>
     </div>
