@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-image: 'https://www.crowdbabble.com/wp-content/uploads/2017/04/twitter-followers.png';
 }
 
 .App-logo {
@@ -12,7 +13,7 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+/* 
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -35,4 +36,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

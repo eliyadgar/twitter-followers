@@ -1,0 +1,4 @@
+export const SEARCH_TERM = "SEARCH_TERM";
+export const SORT_LIST = "SORT_LIST";
+export const ADD_FOLLOWERS = "ADD_FOLLOWERS";
+export const UPDATE_FOLLOWERS = "UPDATE_FOLLOWERS";
