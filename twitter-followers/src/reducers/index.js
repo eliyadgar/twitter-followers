@@ -10,7 +10,6 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case SORT_LIST:
-            console.log('SORT_LIST', action.payload)
             const {followers, searchTerm} = state  
             return {
                 ...state,
@@ -24,10 +23,8 @@ const rootReducer = (state = initialState, action) => {
                 
             }
         case SEARCH_TERM:
-            console.log('SEARCH_TERM', action.searchTerm)
-            return {...state, searchTerm: action.searchTerm}   
+            return {...state, searchTerm: action.searchTerm, followers: state.followers}   
         case ADD_FOLLOWERS:
-            console.log('ADD_FOLLOWERS', action.payload)
             return {
                 searchTerm: action.payload.searchTerm,
                 showAllFlag: action.payload.showAllFlag,
@@ -41,8 +38,6 @@ const rootReducer = (state = initialState, action) => {
                 } 
               }   
         case UPDATE_FOLLOWERS:
-            console.log('UPDATE_FOLLOWERS', action.payload)
-
             return {
                 ...state,
                 followers : 
