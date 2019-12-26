@@ -12,15 +12,12 @@ class App extends React.Component {
   }
 
   handleSort = (key) => {
-    console.log('handleSort');
-    
     const {followers, searchTerm} = this.props
     const sortedFollowersList = followers[searchTerm].fetchedFollowers.sort((a, b) => a[key].localeCompare(b[key]))
     this.props.sortFollowers(sortedFollowersList)
   }
   
   handleShowAll = async () => {
-    console.log('handleShowAll');
     const {followers, searchTerm} = this.props
     const fetchedFollowers = await getFollowers(searchTerm, followers[searchTerm].followers_count)
     const lastUpdatedDate = getTime(new Date())
@@ -28,18 +25,15 @@ class App extends React.Component {
   }
   
   handleSearch = debounce(async (value) => {
-    console.log('handleSearch', value);
     if (value.length > 3) {
-      if (this.props.followers[value] 
-        && compareTimes(this.props.followers[value].lastUpdatedDate) < (1000 * 15)  ) {
-          this.props.searchTermChanged({searchTerm: value}) 
-      } else {
+      if (!!this.props.followers[value]
+        && compareTimes(this.props.followers[value].lastUpdatedDate) < (1000 * 15 * 60)  ) {
+          this.props.searchTermChanged(value) 
+        } else {
         const accountDetails = await getAccount(value)
         const fetchedFollowers = await getFollowers(value)
         const showAllFlag = accountDetails.followers_count > 30
         const lastUpdatedDate = getTime(new Date())
-        console.log({searchTerm: value, showAllFlag, lastUpdatedDate, fetchedFollowers, accountDetails});
-        
         this.props.addFollowersList({searchTerm: value, showAllFlag, lastUpdatedDate, fetchedFollowers, accountDetails})
       } 
     } else {
@@ -49,11 +43,9 @@ class App extends React.Component {
   
 
   render() {
-    console.log("######props", this.props)
     const {searchTerm, followers, showAllFlag} = this.props
     const emptyFollowersList = searchTerm.length <= 3;
     const noResults = followers[searchTerm] && followers[searchTerm].fetchedFollowers === undefined;
-    console.log({followers, showAllFlag})
     return (
       <div className="App">
         <Bar handleSearch={this.handleSearch} handleSort={this.handleSort} showAll={showAllFlag} handleShowAll={this.handleShowAll} disableSortButtons={searchTerm.length < 3}/>
@@ -64,7 +56,7 @@ class App extends React.Component {
           <h3>No results were found</h3> 
         }
         {searchTerm.length > 3 
-        && <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />}
+        && <FollowersList searchTerm={searchTerm} followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />}
       </div>
     );
   }
