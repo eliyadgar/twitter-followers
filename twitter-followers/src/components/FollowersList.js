@@ -25,8 +25,8 @@ export default function AlignItemsList(props) {
   return (
     <List className={classes.root}>
         {props.followers && props.followers.map(follower => 
-            <div>
-                <ListItem alignItems="flex-start" key={follower.id}>
+            <div key={follower.id}>
+                <ListItem alignItems="flex-start">
                     <ListItemAvatar>
                     <Avatar alt={follower.account_name} src={follower.image} />
                     </ListItemAvatar>
