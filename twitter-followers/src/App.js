@@ -20,7 +20,6 @@ class App extends React.Component {
 
   handleSort = (key) => {
     const {followers, searchTerm} = this.state
-    console.log("handling sort...")
     this.setState({followers: {
       ...followers,
       [searchTerm]: {
@@ -84,12 +83,12 @@ class App extends React.Component {
     console.log({followers, showAllFlag})
     return (
       <div className="App">
-        <Bar handleSearch={this.handleSearch} handleSort={this.handleSort} showAll={showAllFlag} handleShowAll={this.handleShowAll}/>
+        <Bar handleSearch={this.handleSearch} handleSort={this.handleSort} showAll={showAllFlag} handleShowAll={this.handleShowAll} disableSortButtons={searchTerm.length < 3}/>
         {emptyFollowersList &&
-          <div>Please search for account</div> 
+          <h3>Please search for account</h3> 
         }
         {noResults &&
-          <div>No results were found</div> 
+          <h3>No results were found</h3> 
         }
         {searchTerm.length > 3 
         && <FollowersList followers={followers[searchTerm] && followers[searchTerm].fetchedFollowers} />}

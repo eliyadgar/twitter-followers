@@ -1,28 +1,24 @@
 export const getFollowers = async (accountName, count = 30) => {
     let cursor = -1
-    let completeFollowersList = []
-    const response = await fetch(`/api/followers?screen_name=${accountName}&count=${count}&cursor=${cursor}`)
-    
+    let completeFollowersList = {}
     try {
          do {
             const response = await fetch(`/api/followers?screen_name=${accountName}&count=${count}&cursor=${cursor}`)
             const resJson = await response.json()
             cursor = resJson.next_cursor
-            const followers = resJson.users.map(user => {
-                return {id: user.id,
-                    account_name: user.name,
-                    screen_name: user.screen_name,
-                    followers: user.followers_count,
-                    image: user.profile_image_url
-                }
-            })
-            completeFollowersList.push(...followers)
-
+            resJson.users.forEach(user => (
+                completeFollowersList[user.id] = {id: user.id,
+                        account_name: user.name,
+                        screen_name: user.screen_name,
+                        followers: user.followers_count,
+                        image: user.profile_image_url
+                    }
+                ))
         } while (cursor !== 0 && count > 30)
     }catch(e) {
         console.log(e)  
     }
-    return completeFollowersList;
+    return Object.values(completeFollowersList);
 }
 
 

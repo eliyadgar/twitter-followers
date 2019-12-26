@@ -94,8 +94,8 @@ export default function PrimarySearchAppBar(props) {
           <div className={classes.sectionDesktop}>
             <Button color="secondary" disabled={!props.showAll} onClick={() => props.handleShowAll()}>Show all</Button>
             <ButtonGroup edge="end" variant="contained" color="primary"  aria-label="text primary button group">
-                <Button onClick={() => props.handleSort("account_name")}>Sort by Account name</Button>
-                <Button onClick={() => props.handleSort("screen_name")}>Sort by Screen name</Button>
+                <Button onClick={() => props.handleSort("account_name")} disabled={props.disableSortButtons}>Sort by Account name</Button>
+                <Button onClick={() => props.handleSort("screen_name")} disabled={props.disableSortButtons}>Sort by Screen name</Button>
             </ButtonGroup>      
           </div>
         </Toolbar>
